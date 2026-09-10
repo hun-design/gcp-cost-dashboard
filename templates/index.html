@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko" class="dark">
+<html lang="ko" class="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,11 +13,9 @@
         extend: {
           colors: {
             brand: {
-              500: '#6366f1',
-              600: '#4f46e5',
-            },
-            darkbg: '#0A0D14',
-            cardbg: '#111622',
+              500: '#4f46e5',
+              600: '#4338ca',
+            }
           },
           fontFamily: {
             sans: ['Pretendard', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
@@ -27,19 +25,18 @@
     }
   </script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700;800&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700;800;900&display=swap');
     body {
       font-family: 'Pretendard', sans-serif;
+      transition: background-color 0.2s, color 0.2s;
+    }
+    .light body {
+      background-color: #F8FAFC;
+      color: #0F172A;
+    }
+    .dark body {
       background-color: #0A0D14;
-      background-image: radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.08) 0%, transparent 50%);
       color: #E2E8F0;
-    }
-    .clean-card {
-      background-color: #111622;
-      border: 1px solid rgba(255, 255, 255, 0.07);
-    }
-    .clean-card:hover {
-      border-color: rgba(255, 255, 255, 0.12);
     }
     .pulse-dot {
       animation: pulseDot 2s infinite;
@@ -51,25 +48,25 @@
     }
   </style>
 </head>
-<body class="min-h-screen text-slate-200">
+<body class="min-h-screen bg-slate-50 text-slate-900 antialiased">
 
   <!-- PIN 인증 모달 -->
-  <div id="pinModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm">
-    <div class="clean-card p-8 rounded-2xl max-w-sm w-full mx-4 shadow-2xl relative">
+  <div id="pinModal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm">
+    <div class="bg-white p-8 rounded-3xl max-w-sm w-full mx-4 shadow-2xl border border-slate-200 relative">
       <div class="text-center mb-6">
-        <div class="w-12 h-12 rounded-xl bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 flex items-center justify-center mx-auto mb-3">
-          <i class="fa-solid fa-shield-halved text-xl"></i>
+        <div class="w-14 h-14 rounded-2xl bg-indigo-50 text-indigo-600 border border-indigo-200 flex items-center justify-center mx-auto mb-3 shadow-sm">
+          <i class="fa-solid fa-shield-halved text-2xl"></i>
         </div>
-        <h2 class="text-xl font-bold text-white tracking-tight">GCP 비용 대시보드</h2>
-        <p class="text-slate-400 text-xs mt-1">접속을 위해 보안 PIN을 입력하세요</p>
+        <h2 class="text-xl font-black text-slate-900 tracking-tight">GCP 비용 대시보드</h2>
+        <p class="text-slate-500 text-xs mt-1 font-medium">안전한 접속을 위해 보안 PIN을 입력하세요</p>
       </div>
       <form id="pinForm" onsubmit="handlePinSubmit(event)">
         <div class="mb-4">
           <input type="password" id="pinInput" autofocus maxlength="10" placeholder="••••"
-            class="w-full text-center tracking-[0.4em] text-2xl font-mono py-3 px-4 rounded-xl bg-slate-950 border border-slate-700 text-white focus:outline-none focus:border-indigo-500 transition">
-          <p id="pinError" class="text-rose-400 text-xs mt-2 text-center hidden"></p>
+            class="w-full text-center tracking-[0.4em] text-2xl font-mono py-3 px-4 rounded-xl bg-slate-50 border-2 border-slate-200 text-slate-900 font-bold focus:outline-none focus:border-indigo-600 focus:bg-white transition">
+          <p id="pinError" class="text-rose-600 text-xs mt-2 text-center font-bold hidden"></p>
         </div>
-        <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-3 px-4 rounded-xl transition">
+        <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3.5 px-4 rounded-xl shadow-md transition transform active:scale-98">
           인증 및 접속
         </button>
       </form>
@@ -80,26 +77,26 @@
   <div id="toastContainer" class="fixed top-5 right-5 z-50 flex flex-col gap-2 max-w-md w-full pointer-events-none"></div>
 
   <!-- 공통 확인 모달 -->
-  <div id="confirmModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/75 backdrop-blur-sm">
-    <div class="clean-card p-6 rounded-2xl max-w-md w-full mx-4 shadow-2xl">
+  <div id="confirmModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-slate-900/60 backdrop-blur-sm">
+    <div class="bg-white p-6 rounded-2xl max-w-md w-full mx-4 shadow-2xl border border-slate-200">
       <div class="flex items-start gap-3.5">
-        <div class="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 bg-rose-500/10 text-rose-400 border border-rose-500/20">
-          <i class="fa-solid fa-triangle-exclamation text-base"></i>
+        <div class="w-11 h-11 rounded-xl flex items-center justify-center shrink-0 bg-rose-50 text-rose-600 border border-rose-200">
+          <i class="fa-solid fa-triangle-exclamation text-lg"></i>
         </div>
         <div class="flex-1">
-          <h3 id="confirmTitle" class="text-base font-bold text-white tracking-tight">작업 확인</h3>
-          <p id="confirmDesc" class="text-slate-300 text-xs mt-1.5 whitespace-pre-line leading-relaxed"></p>
+          <h3 id="confirmTitle" class="text-base font-bold text-slate-900 tracking-tight">작업 확인</h3>
+          <p id="confirmDesc" class="text-slate-600 text-xs mt-1.5 whitespace-pre-line leading-relaxed"></p>
         </div>
       </div>
 
       <div id="confirmInputWrap" class="mt-4 hidden">
-        <label class="block text-xs text-slate-400 mb-1.5">실행을 위해 아래에 <span class="text-rose-400 font-bold">'삭제'</span>를 입력하세요:</label>
-        <input type="text" id="confirmInput" class="w-full py-2 px-3 rounded-lg bg-slate-950 border border-slate-700 text-white text-xs focus:border-rose-500 focus:outline-none transition">
+        <label class="block text-xs font-bold text-slate-700 mb-1.5">실행을 위해 아래에 <span class="text-rose-600 font-black">'삭제'</span>를 입력하세요:</label>
+        <input type="text" id="confirmInput" class="w-full py-2 px-3 rounded-lg bg-slate-50 border border-slate-300 text-slate-900 text-xs font-bold focus:border-rose-600 focus:outline-none transition">
       </div>
 
       <div class="flex justify-end gap-2.5 mt-5">
-        <button onclick="closeConfirmModal()" class="px-3.5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium transition">취소</button>
-        <button id="confirmActionBtn" class="px-4 py-2 rounded-lg bg-rose-600 hover:bg-rose-500 text-white text-xs font-semibold transition">
+        <button onclick="closeConfirmModal()" class="px-3.5 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition">취소</button>
+        <button id="confirmActionBtn" class="px-4 py-2 rounded-lg bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold shadow transition">
           확인 및 실행
         </button>
       </div>
@@ -110,153 +107,164 @@
   <div class="max-w-6xl mx-auto px-4 sm:px-6 py-8">
     
     <!-- 네비게이션 헤더 -->
-    <header class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 border-b border-slate-800">
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400">
-          <i class="fa-brands fa-google text-lg"></i>
+    <header class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 shadow-sm flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div class="flex items-center gap-3.5">
+        <div class="w-11 h-11 rounded-xl bg-indigo-600 text-white flex items-center justify-center shadow-md shadow-indigo-600/20">
+          <i class="fa-brands fa-google text-xl"></i>
         </div>
         <div>
-          <div class="flex items-center gap-2">
-            <h1 class="text-lg font-bold text-white tracking-tight">GCP Cost Pulse</h1>
-            <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-slate-800 text-slate-300 border border-slate-700" id="projectBadge">kdt6-507500</span>
+          <div class="flex items-center gap-2 flex-wrap">
+            <h1 class="text-xl font-black text-slate-900 tracking-tight">GCP Cost Pulse</h1>
+            <span class="px-2 py-0.5 rounded text-xs font-mono font-bold bg-slate-100 text-slate-800 border border-slate-300" id="projectBadge">kdt6-507500</span>
           </div>
-          <p class="text-xs text-slate-400 mt-0.5 flex items-center gap-1.5">
-            <span class="w-2 h-2 rounded-full bg-emerald-400 pulse-dot inline-block"></span>
-            <span>GCP API 실시간 자동 연동 (Zero Standby Cost)</span>
+          <p class="text-xs text-slate-500 mt-0.5 flex items-center gap-1.5 font-medium">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 pulse-dot inline-block"></span>
+            <span class="text-slate-700 font-semibold">GCP API 100% 실시간 연동</span>
+            <span class="text-slate-400">·</span>
+            <span>대기 비용 $0 (Scale-to-Zero)</span>
           </p>
         </div>
       </div>
 
-      <!-- 상단 액션 -->
+      <!-- 상단 액션 바 -->
       <div class="flex items-center gap-2">
-        <button onclick="loadResources(true)" id="refreshBtn" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-xs font-medium text-slate-200 border border-slate-700 transition">
-          <i id="refreshIcon" class="fa-solid fa-arrows-rotate text-[11px]"></i>
+        <button onclick="loadResources(true)" id="refreshBtn" class="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-xs font-bold text-slate-800 border border-slate-300 shadow-sm transition active:scale-98">
+          <i id="refreshIcon" class="fa-solid fa-arrows-rotate text-xs text-indigo-600"></i>
           <span>새로고침</span>
         </button>
-        <button onclick="logout()" title="로그아웃" class="p-2 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-400 hover:text-white border border-slate-700 transition">
+
+        <button onclick="logout()" title="인증 해제" class="p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 hover:text-slate-900 border border-slate-300 transition" title="로그아웃">
           <i class="fa-solid fa-arrow-right-from-bracket text-xs"></i>
         </button>
       </div>
     </header>
 
     <!-- 상태 및 빠른 제어 바 -->
-    <section class="mt-6 clean-card rounded-xl p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+    <section class="mt-4 bg-white rounded-2xl p-4 border border-slate-200 shadow-sm flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
       <div class="flex items-center gap-3">
-        <div id="statusIconWrap" class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-          <i id="statusIcon" class="fa-solid fa-circle-check text-sm"></i>
+        <div id="statusIconWrap" class="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 bg-emerald-50 text-emerald-600 border border-emerald-200">
+          <i id="statusIcon" class="fa-solid fa-circle-check text-base"></i>
         </div>
         <div>
-          <div class="text-xs font-semibold text-white flex items-center gap-2" id="statusTitle">
-            모든 비용 리소스 정리됨 (추가 과금 0원/h)
+          <div class="text-sm font-bold text-slate-900 flex items-center gap-2" id="statusTitle">
+            모든 비용 리소스 정리됨 (실시간 추가 과금 0원/h)
           </div>
-          <p class="text-[11px] text-slate-400 mt-0.5" id="statusDesc">
-            Cloud Run 및 시스템 스토리지 버킷은 무료 티어 내에서 안전하게 유지됩니다.
+          <p class="text-xs text-slate-500 mt-0.5 font-medium" id="statusDesc">
+            현재 실행 중인 유료 인스턴스가 없으며, 시스템 버킷과 대시보드는 무료 티어로 안전하게 유지됩니다.
           </p>
         </div>
       </div>
 
       <!-- 액션 버튼들 (과금 리소스 존재 시 표시) -->
       <div class="flex items-center gap-2 shrink-0">
-        <button onclick="bulkStopAllVms()" id="bulkStopBtn" class="hidden px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-300 border border-amber-500/20 text-xs font-medium transition">
-          모든 VM 중지
+        <button onclick="bulkStopAllVms()" id="bulkStopBtn" class="hidden px-3.5 py-2 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-300 text-xs font-bold transition">
+          모든 VM 일괄 중지
         </button>
-        <button onclick="cleanupBillableOnly()" id="cleanupBillableBtn" class="hidden px-3.5 py-1.5 rounded-lg bg-rose-600 hover:bg-rose-500 text-white text-xs font-semibold shadow transition flex items-center gap-1.5">
-          <i class="fa-solid fa-trash-can text-[11px]"></i>
-          <span>과금 리소스 정리</span>
+        <button onclick="cleanupBillableOnly()" id="cleanupBillableBtn" class="hidden px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold shadow-md transition flex items-center gap-1.5">
+          <i class="fa-solid fa-trash-can text-xs"></i>
+          <span>과금 리소스 스마트 정리</span>
         </button>
       </div>
     </section>
 
-    <!-- 4대 핵심 지표 (Clean 4-Card Grid) -->
-    <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 mt-4">
+    <!-- 4대 핵심 지표 (Clean, Bright 4-Card Grid) -->
+    <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
       
-      <!-- 1. 이번 달 총 청구액 -->
-      <div class="clean-card p-5 rounded-xl flex flex-col justify-between">
+      <!-- 1. 예상 월 청구액 -->
+      <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between hover:border-slate-300 transition">
         <div>
-          <div class="text-xs font-medium text-slate-400 flex items-center justify-between mb-2">
-            <span>이번 달 총 청구액 (<span id="currentMonthLabel">9</span>월)</span>
-            <span class="text-[10px] px-1.5 py-0.5 rounded bg-slate-800 text-slate-300 font-mono">당월 확정</span>
+          <div class="flex items-center justify-between text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">
+            <span>예상 월 청구액 (<span id="currentMonthLabel">9</span>월)</span>
+            <span class="text-[11px] px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200 font-bold">실시간 산출</span>
           </div>
-          <div class="text-2xl sm:text-3xl font-bold text-white font-mono tracking-tight" id="kpiMonthTotalKrw">
-            1,488 원
+          <div class="flex items-baseline gap-1.5 mt-1">
+            <span class="text-3xl sm:text-4xl font-black text-slate-900 font-mono tracking-tight" id="kpiTotalCost">$0.00</span>
+            <span class="text-xs text-slate-500 font-bold">/ 월</span>
           </div>
         </div>
-        <div class="mt-3 pt-2.5 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-400">
-          <span class="font-mono text-slate-300" id="kpiMonthTotalUsd">$1.10</span>
-          <span class="text-[11px] text-slate-400">GCP 결제 반영액</span>
+        <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+          <span class="font-bold text-slate-700" id="kpiKrwCost">약 0 원 / 월</span>
+          <span class="text-[11px] text-emerald-700 font-bold">현재 활성 기준</span>
         </div>
       </div>
 
       <!-- 2. 현재 실시간 소진율 -->
-      <div class="clean-card p-5 rounded-xl flex flex-col justify-between">
+      <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between hover:border-slate-300 transition">
         <div>
-          <div class="text-xs font-medium text-slate-400 flex items-center justify-between mb-2">
-            <span>현재 실시간 소진율</span>
-            <span class="text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 font-medium" id="kpiBurnBadge">과금 없음</span>
+          <div class="flex items-center justify-between text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">
+            <span>실시간 소진율</span>
+            <span class="text-[11px] px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-bold" id="kpiBurnBadge">과금 없음</span>
           </div>
-          <div class="text-2xl sm:text-3xl font-bold text-white font-mono tracking-tight" id="kpiHourlyBurn">
-            0 원 <span class="text-xs text-slate-400 font-normal">/ h</span>
+          <div class="flex items-baseline gap-1.5 mt-1">
+            <span class="text-3xl sm:text-4xl font-black text-slate-900 font-mono tracking-tight" id="kpiHourlyBurn">0</span>
+            <span class="text-xs text-slate-500 font-bold">원 / h</span>
           </div>
         </div>
-        <div class="mt-3 pt-2.5 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-400">
-          <span class="font-mono text-slate-300" id="kpiHourlyBurnUsd">$0.000 / h</span>
-          <span class="text-[11px] text-emerald-400 font-medium" id="kpiBurnStatus">안전 정지 상태</span>
+        <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+          <span class="font-mono text-slate-600 font-bold" id="kpiHourlyBurnUsd">$0.000 / h</span>
+          <span class="text-[11px] text-emerald-700 font-bold" id="kpiBurnStatus">안전 정지 상태</span>
         </div>
       </div>
 
       <!-- 3. 가상머신 (VM) -->
-      <div class="clean-card p-5 rounded-xl flex flex-col justify-between">
+      <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between hover:border-slate-300 transition">
         <div>
-          <div class="text-xs font-medium text-slate-400 flex items-center justify-between mb-2">
-            <span>가상머신 (Compute Engine)</span>
-            <span class="text-[10px] px-1.5 py-0.5 rounded bg-slate-800 text-slate-400" id="kpiVmTotalBadge">전체 0대</span>
+          <div class="flex items-center justify-between text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">
+            <span>가상머신 (VM)</span>
+            <span class="text-[11px] px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 font-bold" id="kpiVmTotalBadge">전체 0대</span>
           </div>
-          <div class="text-2xl sm:text-3xl font-bold text-white font-mono tracking-tight">
-            <span id="kpiRunningVms">0</span> <span class="text-xs text-slate-400 font-normal">대 가동 중</span>
+          <div class="flex items-baseline gap-1.5 mt-1">
+            <span class="text-3xl sm:text-4xl font-black text-slate-900 font-mono tracking-tight" id="kpiRunningVms">0</span>
+            <span class="text-xs text-slate-500 font-bold">대 가동 중</span>
           </div>
         </div>
-        <div class="mt-3 pt-2.5 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-400">
-          <span>VM 요율: <span id="kpiVmCost" class="font-mono text-slate-300 font-semibold">$0.00</span></span>
-          <span class="text-[11px] text-emerald-400" id="kpiVmStatus">모두 정리됨</span>
+        <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+          <span class="text-slate-600 font-medium">VM 청구: <strong class="font-mono text-slate-900" id="kpiVmCost">$0.00</strong></span>
+          <span class="text-[11px] text-emerald-700 font-bold" id="kpiVmStatus">모두 정리됨</span>
         </div>
       </div>
 
       <!-- 4. 스토리지 & 외부 IP -->
-      <div class="clean-card p-5 rounded-xl flex flex-col justify-between">
+      <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between hover:border-slate-300 transition">
         <div>
-          <div class="text-xs font-medium text-slate-400 flex items-center justify-between mb-2">
-            <span>영구 디스크 & 고정 IP</span>
-            <span class="text-[10px] px-1.5 py-0.5 rounded bg-slate-800 text-slate-400" id="kpiDiskCountBadge">디스크 0개</span>
+          <div class="flex items-center justify-between text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">
+            <span>스토리지 & IP</span>
+            <span class="text-[11px] px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 font-bold" id="kpiDiskCountBadge">디스크 0개</span>
           </div>
-          <div class="text-2xl sm:text-3xl font-bold text-white font-mono tracking-tight">
-            <span id="kpiDisksGb">0</span> <span class="text-xs text-slate-400 font-normal">GB 보관</span>
+          <div class="flex items-baseline gap-1.5 mt-1">
+            <span class="text-3xl sm:text-4xl font-black text-slate-900 font-mono tracking-tight" id="kpiDisksGb">0</span>
+            <span class="text-xs text-slate-500 font-bold">GB 보관</span>
           </div>
         </div>
-        <div class="mt-3 pt-2.5 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-400">
-          <span>디스크 <span id="kpiDiskCost" class="font-mono text-slate-300">$0.00</span></span>
-          <span>IP <span id="kpiIpCost" class="font-mono text-slate-300">$0.00</span></span>
+        <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-600 font-medium">
+          <span>디스크 <strong class="font-mono text-slate-900" id="kpiDiskCost">$0.00</strong></span>
+          <span>IP <strong class="font-mono text-slate-900" id="kpiIpCost">$0.00</strong></span>
         </div>
       </div>
 
     </section>
 
     <!-- 리소스 탭 네비게이션 -->
-    <div class="mt-8 flex items-center gap-1.5 border-b border-slate-800 pb-2 overflow-x-auto">
-      <button onclick="switchTab('tabVms')" id="btnTabVms" class="tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-indigo-600 text-white flex items-center gap-1.5 transition">
+    <div class="mt-8 flex items-center gap-2 border-b border-slate-200 pb-2.5 overflow-x-auto">
+      <button onclick="switchTab('tabVms')" id="btnTabVms" class="tab-btn px-4 py-2 rounded-xl text-xs font-bold bg-indigo-600 text-white shadow-sm flex items-center gap-2 transition">
+        <i class="fa-solid fa-server text-xs"></i>
         <span>가상머신 (VM)</span>
-        <span id="badgeVmCount" class="px-1.5 py-0.2 rounded text-[10px] bg-white/20 text-white font-mono">0</span>
+        <span id="badgeVmCount" class="px-2 py-0.5 rounded-full text-[10px] bg-white/20 text-white font-mono">0</span>
       </button>
-      <button onclick="switchTab('tabDisks')" id="btnTabDisks" class="tab-btn px-3 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 flex items-center gap-1.5 transition">
+      <button onclick="switchTab('tabDisks')" id="btnTabDisks" class="tab-btn px-4 py-2 rounded-xl text-xs font-bold bg-white text-slate-600 hover:text-slate-900 hover:bg-slate-100 border border-slate-200 flex items-center gap-2 transition">
+        <i class="fa-solid fa-hard-drive text-xs"></i>
         <span>영구 디스크</span>
-        <span id="badgeDiskCount" class="px-1.5 py-0.2 rounded text-[10px] bg-slate-800 text-slate-400 font-mono">0</span>
+        <span id="badgeDiskCount" class="px-2 py-0.5 rounded-full text-[10px] bg-slate-100 text-slate-700 font-mono">0</span>
       </button>
-      <button onclick="switchTab('tabIps')" id="btnTabIps" class="tab-btn px-3 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 flex items-center gap-1.5 transition">
+      <button onclick="switchTab('tabIps')" id="btnTabIps" class="tab-btn px-4 py-2 rounded-xl text-xs font-bold bg-white text-slate-600 hover:text-slate-900 hover:bg-slate-100 border border-slate-200 flex items-center gap-2 transition">
+        <i class="fa-solid fa-globe text-xs"></i>
         <span>외부 IP 주소</span>
-        <span id="badgeIpCount" class="px-1.5 py-0.2 rounded text-[10px] bg-slate-800 text-slate-400 font-mono">0</span>
+        <span id="badgeIpCount" class="px-2 py-0.5 rounded-full text-[10px] bg-slate-100 text-slate-700 font-mono">0</span>
       </button>
-      <button onclick="switchTab('tabBuckets')" id="btnTabBuckets" class="tab-btn px-3 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 flex items-center gap-1.5 transition">
+      <button onclick="switchTab('tabBuckets')" id="btnTabBuckets" class="tab-btn px-4 py-2 rounded-xl text-xs font-bold bg-white text-slate-600 hover:text-slate-900 hover:bg-slate-100 border border-slate-200 flex items-center gap-2 transition">
+        <i class="fa-solid fa-box-archive text-xs"></i>
         <span>Cloud Storage</span>
-        <span id="badgeBucketCount" class="px-1.5 py-0.2 rounded text-[10px] bg-slate-800 text-slate-400 font-mono">5</span>
+        <span id="badgeBucketCount" class="px-2 py-0.5 rounded-full text-[10px] bg-slate-100 text-slate-700 font-mono">5</span>
       </button>
     </div>
 
@@ -265,21 +273,21 @@
 
       <!-- TAB 1: 가상머신 (VM) -->
       <div id="tabVms" class="tab-content">
-        <div class="clean-card rounded-xl overflow-hidden" id="vmsContainer">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden" id="vmsContainer">
           <div class="overflow-x-auto">
-            <table class="w-full text-left text-xs text-slate-300">
-              <thead class="bg-slate-900/60 text-slate-400 uppercase border-b border-slate-800">
+            <table class="w-full text-left text-xs text-slate-800">
+              <thead class="bg-slate-50 text-slate-600 uppercase border-b border-slate-200 font-bold">
                 <tr>
-                  <th class="py-3 px-4 font-semibold">인스턴스 이름</th>
-                  <th class="py-3 px-4 font-semibold">Zone / 머신 유형</th>
-                  <th class="py-3 px-4 font-semibold">상태</th>
-                  <th class="py-3 px-4 font-semibold">가동 시간</th>
-                  <th class="py-3 px-4 font-semibold">외부 IP</th>
-                  <th class="py-3 px-4 font-semibold text-right">예상 월 비용</th>
-                  <th class="py-3 px-4 font-semibold text-center">제어</th>
+                  <th class="py-3.5 px-4">인스턴스 이름</th>
+                  <th class="py-3.5 px-4">Zone / 머신 유형</th>
+                  <th class="py-3.5 px-4">상태</th>
+                  <th class="py-3.5 px-4">가동 시간</th>
+                  <th class="py-3.5 px-4">외부 IP</th>
+                  <th class="py-3.5 px-4 text-right">예상 월 비용</th>
+                  <th class="py-3.5 px-4 text-center">제어</th>
                 </tr>
               </thead>
-              <tbody id="vmsTableBody" class="divide-y divide-slate-800/60"></tbody>
+              <tbody id="vmsTableBody" class="divide-y divide-slate-100"></tbody>
             </table>
           </div>
         </div>
@@ -287,20 +295,20 @@
 
       <!-- TAB 2: 영구 디스크 -->
       <div id="tabDisks" class="tab-content hidden">
-        <div class="clean-card rounded-xl overflow-hidden" id="disksContainer">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden" id="disksContainer">
           <div class="overflow-x-auto">
-            <table class="w-full text-left text-xs text-slate-300">
-              <thead class="bg-slate-900/60 text-slate-400 uppercase border-b border-slate-800">
+            <table class="w-full text-left text-xs text-slate-800">
+              <thead class="bg-slate-50 text-slate-600 uppercase border-b border-slate-200 font-bold">
                 <tr>
-                  <th class="py-3 px-4 font-semibold">디스크 이름</th>
-                  <th class="py-3 px-4 font-semibold">Zone / 용량</th>
-                  <th class="py-3 px-4 font-semibold">유형</th>
-                  <th class="py-3 px-4 font-semibold">연결 대상</th>
-                  <th class="py-3 px-4 font-semibold text-right">월 비용</th>
-                  <th class="py-3 px-4 font-semibold text-center">제어</th>
+                  <th class="py-3.5 px-4">디스크 이름</th>
+                  <th class="py-3.5 px-4">Zone / 용량</th>
+                  <th class="py-3.5 px-4">유형</th>
+                  <th class="py-3.5 px-4">연결 대상</th>
+                  <th class="py-3.5 px-4 text-right">월 비용</th>
+                  <th class="py-3.5 px-4 text-center">제어</th>
                 </tr>
               </thead>
-              <tbody id="disksTableBody" class="divide-y divide-slate-800/60"></tbody>
+              <tbody id="disksTableBody" class="divide-y divide-slate-100"></tbody>
             </table>
           </div>
         </div>
@@ -308,20 +316,20 @@
 
       <!-- TAB 3: 외부 IP 주소 -->
       <div id="tabIps" class="tab-content hidden">
-        <div class="clean-card rounded-xl overflow-hidden" id="ipsContainer">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden" id="ipsContainer">
           <div class="overflow-x-auto">
-            <table class="w-full text-left text-xs text-slate-300">
-              <thead class="bg-slate-900/60 text-slate-400 uppercase border-b border-slate-800">
+            <table class="w-full text-left text-xs text-slate-800">
+              <thead class="bg-slate-50 text-slate-600 uppercase border-b border-slate-200 font-bold">
                 <tr>
-                  <th class="py-3 px-4 font-semibold">IP 이름</th>
-                  <th class="py-3 px-4 font-semibold">리전 / 주소</th>
-                  <th class="py-3 px-4 font-semibold">상태</th>
-                  <th class="py-3 px-4 font-semibold">연결 대상</th>
-                  <th class="py-3 px-4 font-semibold text-right">월 비용</th>
-                  <th class="py-3 px-4 font-semibold text-center">제어</th>
+                  <th class="py-3.5 px-4">IP 이름</th>
+                  <th class="py-3.5 px-4">리전 / 주소</th>
+                  <th class="py-3.5 px-4">상태</th>
+                  <th class="py-3.5 px-4">연결 대상</th>
+                  <th class="py-3.5 px-4 text-right">월 비용</th>
+                  <th class="py-3.5 px-4 text-center">제어</th>
                 </tr>
               </thead>
-              <tbody id="ipsTableBody" class="divide-y divide-slate-800/60"></tbody>
+              <tbody id="ipsTableBody" class="divide-y divide-slate-100"></tbody>
             </table>
           </div>
         </div>
@@ -329,19 +337,19 @@
 
       <!-- TAB 4: Cloud Storage 버킷 -->
       <div id="tabBuckets" class="tab-content hidden">
-        <div class="clean-card rounded-xl overflow-hidden">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
           <div class="overflow-x-auto">
-            <table class="w-full text-left text-xs text-slate-300">
-              <thead class="bg-slate-900/60 text-slate-400 uppercase border-b border-slate-800">
+            <table class="w-full text-left text-xs text-slate-800">
+              <thead class="bg-slate-50 text-slate-600 uppercase border-b border-slate-200 font-bold">
                 <tr>
-                  <th class="py-3 px-4 font-semibold">버킷 이름</th>
-                  <th class="py-3 px-4 font-semibold">위치</th>
-                  <th class="py-3 px-4 font-semibold">스토리지 등급</th>
-                  <th class="py-3 px-4 font-semibold">구분</th>
-                  <th class="py-3 px-4 font-semibold text-right">비용</th>
+                  <th class="py-3.5 px-4">버킷 이름</th>
+                  <th class="py-3.5 px-4">위치</th>
+                  <th class="py-3.5 px-4">스토리지 등급</th>
+                  <th class="py-3.5 px-4">구분</th>
+                  <th class="py-3.5 px-4 text-right">비용</th>
                 </tr>
               </thead>
-              <tbody id="bucketsTableBody" class="divide-y divide-slate-800/60"></tbody>
+              <tbody id="bucketsTableBody" class="divide-y divide-slate-100"></tbody>
             </table>
           </div>
         </div>
@@ -350,10 +358,10 @@
     </div>
 
     <!-- 하단 푸터 -->
-    <footer class="mt-8 pt-4 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-2">
-      <div>GCP 프로젝트: <span class="text-slate-400 font-mono">kdt6-507500</span> | 환율 기준: 1 USD ≈ 1,350 KRW</div>
-      <a href="https://console.cloud.google.com/billing" target="_blank" class="text-indigo-400 hover:text-indigo-300 font-medium flex items-center gap-1 transition">
-        <span>GCP 콘솔 결제 열기</span>
+    <footer class="mt-8 pt-4 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 font-medium gap-2">
+      <div>GCP 프로젝트: <strong class="text-slate-800 font-mono">kdt6-507500</strong> | 환율 기준: 1 USD ≈ 1,350 KRW</div>
+      <a href="https://console.cloud.google.com/billing" target="_blank" class="text-indigo-600 hover:text-indigo-800 font-bold flex items-center gap-1 transition">
+        <span>GCP 콘솔 결제 창 바로가기</span>
         <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
       </a>
     </footer>
@@ -434,7 +442,7 @@
         const data = await res.json();
         currentData = data;
         renderDashboard(data);
-        if (animate) showToast('리소스를 최신 상태로 갱신했습니다.', 'info');
+        if (animate) showToast('리소스를 최신 상태로 갱신했습니다.', 'success');
       } catch (err) {
         showToast('리소스 조회 실패: ' + err.message, 'error');
       } finally {
@@ -447,34 +455,34 @@
     function renderDashboard(data) {
       const s = data.summary;
 
-      // 동적 월 표시 (예: 9월, 10월 등 현재 월 자동 반영)
+      // 동적 월 계산
       const currentMonth = s.currentMonth || (new Date().getMonth() + 1);
       const monthElem = document.getElementById('currentMonthLabel');
       if (monthElem) monthElem.textContent = currentMonth;
 
-      // 1. 이번 달 총 청구액 (당월 누적 청구액)
-      const monthTotalKrw = s.monthTotalKrw || Math.round((s.monthTotalUsd || 1.10) * 1350);
-      const monthTotalUsd = s.monthTotalUsd || 1.10;
-      document.getElementById('kpiMonthTotalKrw').textContent = `${monthTotalKrw.toLocaleString()} 원`;
-      document.getElementById('kpiMonthTotalUsd').textContent = `$${monthTotalUsd.toFixed(2)}`;
+      // 1. 예상 월 청구액 (100% GCP API 계산값)
+      const grandTotalMonthly = s.grandTotalMonthly || 0.0;
+      const grandTotalMonthlyKrw = s.grandTotalMonthlyKrw || Math.round(grandTotalMonthly * 1350);
+      document.getElementById('kpiTotalCost').textContent = `$${grandTotalMonthly.toFixed(2)}`;
+      document.getElementById('kpiKrwCost').textContent = `약 ${grandTotalMonthlyKrw.toLocaleString()} 원 / 월`;
 
       // 2. 실시간 소진율
       const hourlyBurn = s.hourlyBurnRate || 0.0;
       const hourlyBurnKrw = s.hourlyBurnRateKrw || Math.round(hourlyBurn * 1350);
-      document.getElementById('kpiHourlyBurn').innerHTML = `${hourlyBurnKrw.toLocaleString()} 원 <span class="text-xs text-slate-400 font-normal">/ h</span>`;
+      document.getElementById('kpiHourlyBurn').textContent = hourlyBurnKrw.toLocaleString();
       document.getElementById('kpiHourlyBurnUsd').textContent = `$${hourlyBurn.toFixed(3)} / h`;
 
       const burnBadge = document.getElementById('kpiBurnBadge');
       const burnStatus = document.getElementById('kpiBurnStatus');
       if (hourlyBurn > 0) {
-        burnBadge.className = 'text-[10px] px-1.5 py-0.5 rounded bg-rose-500/10 text-rose-400 font-semibold';
+        burnBadge.className = 'text-[11px] px-2.5 py-0.5 rounded-full bg-rose-50 text-rose-700 border border-rose-200 font-bold';
         burnBadge.textContent = '과금 진행 중';
-        burnStatus.className = 'text-[11px] text-rose-400 font-medium';
+        burnStatus.className = 'text-[11px] text-rose-700 font-bold';
         burnStatus.textContent = '시간당 요금 청구 중';
       } else {
-        burnBadge.className = 'text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 font-medium';
+        burnBadge.className = 'text-[11px] px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-bold';
         burnBadge.textContent = '과금 없음';
-        burnStatus.className = 'text-[11px] text-emerald-400 font-medium';
+        burnStatus.className = 'text-[11px] text-emerald-700 font-bold';
         burnStatus.textContent = '안전 정지 상태';
       }
 
@@ -486,10 +494,10 @@
       const vmStatus = document.getElementById('kpiVmStatus');
       if (s.runningVmsCount > 0) {
         vmStatus.textContent = `${s.runningVmsCount}대 가동 중`;
-        vmStatus.className = 'text-[11px] text-rose-400 font-semibold';
+        vmStatus.className = 'text-[11px] text-rose-700 font-bold';
       } else {
         vmStatus.textContent = '모두 정리됨';
-        vmStatus.className = 'text-[11px] text-emerald-400 font-medium';
+        vmStatus.className = 'text-[11px] text-emerald-700 font-bold';
       }
 
       // 4. 스토리지 & IP
@@ -508,17 +516,17 @@
       const cleanupBtn = document.getElementById('cleanupBillableBtn');
 
       if (billableCount > 0) {
-        statusTitle.textContent = `현재 비용 발생 리소스 ${billableCount}개 감지`;
-        statusDesc.textContent = `시간당 요금이 청구 중입니다. 필요하지 않은 경우 즉시 정리할 수 있습니다.`;
-        statusIconWrap.className = 'w-8 h-8 rounded-lg flex items-center justify-center shrink-0 bg-rose-500/10 text-rose-400 border border-rose-500/20';
-        statusIcon.className = 'fa-solid fa-triangle-exclamation text-sm';
+        statusTitle.textContent = `현재 비용 발생 리소스 ${billableCount}개 실행 중`;
+        statusDesc.textContent = `시간당 요금이 부과되고 있습니다. 필요하지 않은 리소스는 아래에서 즉시 정리할 수 있습니다.`;
+        statusIconWrap.className = 'w-10 h-10 rounded-xl flex items-center justify-center shrink-0 bg-rose-50 text-rose-600 border border-rose-200';
+        statusIcon.className = 'fa-solid fa-triangle-exclamation text-base';
         cleanupBtn.classList.remove('hidden');
         if (s.runningVmsCount > 0) bulkStopBtn.classList.remove('hidden');
       } else {
-        statusTitle.textContent = '모든 비용 리소스 정리됨 (추가 과금 0원/h)';
-        statusDesc.textContent = 'Cloud Run 및 시스템 스토리지 버킷은 무료 티어 내에서 안전하게 유지됩니다.';
-        statusIconWrap.className = 'w-8 h-8 rounded-lg flex items-center justify-center shrink-0 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20';
-        statusIcon.className = 'fa-solid fa-circle-check text-sm';
+        statusTitle.textContent = '모든 비용 리소스 정리됨 (실시간 추가 과금 0원/h)';
+        statusDesc.textContent = '현재 실행 중인 유료 인스턴스가 없으며, 시스템 버킷과 대시보드는 무료 티어로 안전하게 유지됩니다.';
+        statusIconWrap.className = 'w-10 h-10 rounded-xl flex items-center justify-center shrink-0 bg-emerald-50 text-emerald-600 border border-emerald-200';
+        statusIcon.className = 'fa-solid fa-circle-check text-base';
         cleanupBtn.classList.add('hidden');
         bulkStopBtn.classList.add('hidden');
       }
@@ -542,12 +550,12 @@
 
       if (!instances || instances.length === 0) {
         container.innerHTML = `
-          <div class="py-12 px-4 text-center flex flex-col items-center justify-center gap-2">
-            <div class="w-10 h-10 rounded-xl bg-slate-800/80 text-emerald-400 flex items-center justify-center mb-1">
-              <i class="fa-solid fa-circle-check text-lg"></i>
+          <div class="py-14 px-4 text-center flex flex-col items-center justify-center gap-2">
+            <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 border border-emerald-200 flex items-center justify-center mb-1 shadow-sm">
+              <i class="fa-solid fa-circle-check text-xl"></i>
             </div>
-            <div class="text-sm font-semibold text-white">가동 중인 가상머신이 없습니다</div>
-            <div class="text-xs text-slate-400">모든 VM이 정리되어 인스턴스 과금이 발생하지 않습니다.</div>
+            <div class="text-base font-bold text-slate-900">가동 중인 가상머신(VM)이 없습니다</div>
+            <div class="text-xs text-slate-500 font-medium">모든 인스턴스가 삭제·정리되어 Compute 요금이 0원입니다.</div>
           </div>
         `;
         return;
@@ -555,19 +563,19 @@
 
       container.innerHTML = `
         <div class="overflow-x-auto">
-          <table class="w-full text-left text-xs text-slate-300">
-            <thead class="bg-slate-900/60 text-slate-400 uppercase border-b border-slate-800">
+          <table class="w-full text-left text-xs text-slate-800">
+            <thead class="bg-slate-50 text-slate-600 uppercase border-b border-slate-200 font-bold">
               <tr>
-                <th class="py-3 px-4 font-semibold">인스턴스 이름</th>
-                <th class="py-3 px-4 font-semibold">Zone / 머신 유형</th>
-                <th class="py-3 px-4 font-semibold">상태</th>
-                <th class="py-3 px-4 font-semibold">가동 시간</th>
-                <th class="py-3 px-4 font-semibold">외부 IP</th>
-                <th class="py-3 px-4 font-semibold text-right">예상 월 비용</th>
-                <th class="py-3 px-4 font-semibold text-center">제어</th>
+                <th class="py-3.5 px-4">인스턴스 이름</th>
+                <th class="py-3.5 px-4">Zone / 머신 유형</th>
+                <th class="py-3.5 px-4">상태</th>
+                <th class="py-3.5 px-4">가동 시간</th>
+                <th class="py-3.5 px-4">외부 IP</th>
+                <th class="py-3.5 px-4 text-right">예상 월 비용</th>
+                <th class="py-3.5 px-4 text-center">제어</th>
               </tr>
             </thead>
-            <tbody id="vmsTableBody" class="divide-y divide-slate-800/60"></tbody>
+            <tbody id="vmsTableBody" class="divide-y divide-slate-100"></tbody>
           </table>
         </div>
       `;
@@ -576,30 +584,30 @@
       tbodyInner.innerHTML = instances.map(inst => {
         const isRunning = inst.status === 'RUNNING';
         const statusBadge = isRunning
-          ? `<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400 pulse-dot"></span>RUNNING</span>`
-          : `<span class="px-2 py-0.5 rounded text-[11px] bg-slate-800 text-slate-400">STOPPED</span>`;
+          ? `<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 pulse-dot"></span>RUNNING</span>`
+          : `<span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-slate-100 text-slate-600 border border-slate-200">STOPPED</span>`;
 
         const extIpsHtml = inst.externalIps.length ? inst.externalIps.join(', ') : '-';
 
         const actionBtns = isRunning
           ? `
-            <button onclick="confirmVmStop('${inst.zone}', '${inst.name}')" class="px-2 py-1 rounded bg-amber-500/10 text-amber-300 hover:bg-amber-500/20 text-xs font-medium mr-1">중지</button>
-            <button onclick="confirmVmDelete('${inst.zone}', '${inst.name}')" class="px-2 py-1 rounded bg-rose-500/10 text-rose-300 hover:bg-rose-500/20 text-xs font-medium">삭제</button>
+            <button onclick="confirmVmStop('${inst.zone}', '${inst.name}')" class="px-2.5 py-1 rounded-lg bg-amber-50 text-amber-800 hover:bg-amber-100 border border-amber-200 text-xs font-bold mr-1">중지</button>
+            <button onclick="confirmVmDelete('${inst.zone}', '${inst.name}')" class="px-2.5 py-1 rounded-lg bg-rose-50 text-rose-700 hover:bg-rose-100 border border-rose-200 text-xs font-bold">삭제</button>
           `
           : `
-            <button onclick="startVm('${inst.zone}', '${inst.name}')" class="px-2 py-1 rounded bg-emerald-500/10 text-emerald-300 hover:bg-emerald-500/20 text-xs font-medium mr-1">시작</button>
-            <button onclick="confirmVmDelete('${inst.zone}', '${inst.name}')" class="px-2 py-1 rounded bg-rose-500/10 text-rose-300 hover:bg-rose-500/20 text-xs font-medium">삭제</button>
+            <button onclick="startVm('${inst.zone}', '${inst.name}')" class="px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-800 hover:bg-emerald-100 border border-emerald-200 text-xs font-bold mr-1">시작</button>
+            <button onclick="confirmVmDelete('${inst.zone}', '${inst.name}')" class="px-2.5 py-1 rounded-lg bg-rose-50 text-rose-700 hover:bg-rose-100 border border-rose-200 text-xs font-bold">삭제</button>
           `;
 
         return `
-          <tr class="hover:bg-slate-800/30 transition">
-            <td class="py-3 px-4 font-semibold text-white">${inst.name}</td>
-            <td class="py-3 px-4 text-slate-400 font-mono">${inst.machineType} <span class="text-slate-500">(${inst.zone})</span></td>
-            <td class="py-3 px-4">${statusBadge}</td>
-            <td class="py-3 px-4 text-slate-400 font-mono">${inst.uptimeHours}시간</td>
-            <td class="py-3 px-4 font-mono text-slate-300">${extIpsHtml}</td>
-            <td class="py-3 px-4 text-right font-mono font-semibold text-white">$${inst.totalMonthlyCost.toFixed(2)}</td>
-            <td class="py-3 px-4 text-center whitespace-nowrap">${actionBtns}</td>
+          <tr class="hover:bg-slate-50 transition">
+            <td class="py-3.5 px-4 font-bold text-slate-900">${inst.name}</td>
+            <td class="py-3.5 px-4 text-slate-600 font-mono">${inst.machineType} <span class="text-slate-400">(${inst.zone})</span></td>
+            <td class="py-3.5 px-4">${statusBadge}</td>
+            <td class="py-3.5 px-4 text-slate-700 font-mono">${inst.uptimeHours}시간</td>
+            <td class="py-3.5 px-4 font-mono text-slate-700">${extIpsHtml}</td>
+            <td class="py-3.5 px-4 text-right font-mono font-bold text-slate-900">$${inst.totalMonthlyCost.toFixed(2)}</td>
+            <td class="py-3.5 px-4 text-center whitespace-nowrap">${actionBtns}</td>
           </tr>
         `;
       }).join('');
@@ -610,12 +618,12 @@
 
       if (!disks || disks.length === 0) {
         container.innerHTML = `
-          <div class="py-12 px-4 text-center flex flex-col items-center justify-center gap-2">
-            <div class="w-10 h-10 rounded-xl bg-slate-800/80 text-emerald-400 flex items-center justify-center mb-1">
-              <i class="fa-solid fa-hard-drive text-lg"></i>
+          <div class="py-14 px-4 text-center flex flex-col items-center justify-center gap-2">
+            <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 border border-emerald-200 flex items-center justify-center mb-1 shadow-sm">
+              <i class="fa-solid fa-hard-drive text-xl"></i>
             </div>
-            <div class="text-sm font-semibold text-white">보관 중인 영구 디스크가 없습니다</div>
-            <div class="text-xs text-slate-400">디스크 보관 요금이 발생하지 않습니다.</div>
+            <div class="text-base font-bold text-slate-900">보관 중인 영구 디스크가 없습니다</div>
+            <div class="text-xs text-slate-500 font-medium">유료 디스크가 모두 정리되어 용량 보관 요금이 0원입니다.</div>
           </div>
         `;
         return;
@@ -623,18 +631,18 @@
 
       container.innerHTML = `
         <div class="overflow-x-auto">
-          <table class="w-full text-left text-xs text-slate-300">
-            <thead class="bg-slate-900/60 text-slate-400 uppercase border-b border-slate-800">
+          <table class="w-full text-left text-xs text-slate-800">
+            <thead class="bg-slate-50 text-slate-600 uppercase border-b border-slate-200 font-bold">
               <tr>
-                <th class="py-3 px-4 font-semibold">디스크 이름</th>
-                <th class="py-3 px-4 font-semibold">Zone / 용량</th>
-                <th class="py-3 px-4 font-semibold">유형</th>
-                <th class="py-3 px-4 font-semibold">연결 대상</th>
-                <th class="py-3 px-4 font-semibold text-right">월 비용</th>
-                <th class="py-3 px-4 font-semibold text-center">제어</th>
+                <th class="py-3.5 px-4">디스크 이름</th>
+                <th class="py-3.5 px-4">Zone / 용량</th>
+                <th class="py-3.5 px-4">유형</th>
+                <th class="py-3.5 px-4">연결 대상</th>
+                <th class="py-3.5 px-4 text-right">월 비용</th>
+                <th class="py-3.5 px-4 text-center">제어</th>
               </tr>
             </thead>
-            <tbody id="disksTableBody" class="divide-y divide-slate-800/60"></tbody>
+            <tbody id="disksTableBody" class="divide-y divide-slate-100"></tbody>
           </table>
         </div>
       `;
@@ -642,21 +650,21 @@
       const tbody = document.getElementById('disksTableBody');
       tbody.innerHTML = disks.map(d => {
         const attachedHtml = d.isAttached
-          ? `<span class="text-slate-300">${d.attachedTo.join(', ')}</span>`
-          : `<span class="text-amber-400 font-medium">미연결 (유휴 과금 중)</span>`;
+          ? `<span class="text-slate-800 font-medium">${d.attachedTo.join(', ')}</span>`
+          : `<span class="text-amber-800 font-bold bg-amber-50 px-2 py-0.5 rounded border border-amber-200">미연결 유휴 과금 중</span>`;
 
         const deleteBtn = d.isAttached
-          ? `<span class="text-slate-500">VM 연결됨</span>`
-          : `<button onclick="confirmDiskDelete('${d.zone}', '${d.name}')" class="px-2 py-1 rounded bg-rose-500/10 text-rose-300 hover:bg-rose-500/20 text-xs font-medium">삭제</button>`;
+          ? `<span class="text-slate-400 font-medium">VM 연결됨</span>`
+          : `<button onclick="confirmDiskDelete('${d.zone}', '${d.name}')" class="px-2.5 py-1 rounded-lg bg-rose-50 text-rose-700 hover:bg-rose-100 border border-rose-200 text-xs font-bold">삭제</button>`;
 
         return `
-          <tr class="hover:bg-slate-800/30 transition">
-            <td class="py-3 px-4 font-semibold text-white">${d.name}</td>
-            <td class="py-3 px-4 font-mono">${d.sizeGb} GB <span class="text-slate-500">(${d.zone})</span></td>
-            <td class="py-3 px-4">${d.type}</td>
-            <td class="py-3 px-4">${attachedHtml}</td>
-            <td class="py-3 px-4 text-right font-mono font-semibold text-white">$${d.monthlyCost.toFixed(2)}</td>
-            <td class="py-3 px-4 text-center whitespace-nowrap">${deleteBtn}</td>
+          <tr class="hover:bg-slate-50 transition">
+            <td class="py-3.5 px-4 font-bold text-slate-900">${d.name}</td>
+            <td class="py-3.5 px-4 font-mono font-bold">${d.sizeGb} GB <span class="text-slate-400 font-normal">(${d.zone})</span></td>
+            <td class="py-3.5 px-4">${d.type}</td>
+            <td class="py-3.5 px-4">${attachedHtml}</td>
+            <td class="py-3.5 px-4 text-right font-mono font-bold text-slate-900">$${d.monthlyCost.toFixed(2)}</td>
+            <td class="py-3.5 px-4 text-center whitespace-nowrap">${deleteBtn}</td>
           </tr>
         `;
       }).join('');
@@ -667,12 +675,12 @@
 
       if (!ips || ips.length === 0) {
         container.innerHTML = `
-          <div class="py-12 px-4 text-center flex flex-col items-center justify-center gap-2">
-            <div class="w-10 h-10 rounded-xl bg-slate-800/80 text-emerald-400 flex items-center justify-center mb-1">
-              <i class="fa-solid fa-globe text-lg"></i>
+          <div class="py-14 px-4 text-center flex flex-col items-center justify-center gap-2">
+            <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 border border-emerald-200 flex items-center justify-center mb-1 shadow-sm">
+              <i class="fa-solid fa-globe text-xl"></i>
             </div>
-            <div class="text-sm font-semibold text-white">할당된 외부 IP 주소가 없습니다</div>
-            <div class="text-xs text-slate-400">외부 IP 예약 및 사용 요금이 발생하지 않습니다.</div>
+            <div class="text-base font-bold text-slate-900">할당된 외부 고정 IP가 없습니다</div>
+            <div class="text-xs text-slate-500 font-medium">유휴 IP 예약 요금이 발생하지 않습니다. ($0)</div>
           </div>
         `;
         return;
@@ -680,32 +688,32 @@
 
       container.innerHTML = `
         <div class="overflow-x-auto">
-          <table class="w-full text-left text-xs text-slate-300">
-            <thead class="bg-slate-900/60 text-slate-400 uppercase border-b border-slate-800">
+          <table class="w-full text-left text-xs text-slate-800">
+            <thead class="bg-slate-50 text-slate-600 uppercase border-b border-slate-200 font-bold">
               <tr>
-                <th class="py-3 px-4 font-semibold">IP 이름</th>
-                <th class="py-3 px-4 font-semibold">리전 / 주소</th>
-                <th class="py-3 px-4 font-semibold">상태</th>
-                <th class="py-3 px-4 font-semibold">연결 대상</th>
-                <th class="py-3 px-4 font-semibold text-right">월 비용</th>
-                <th class="py-3 px-4 font-semibold text-center">제어</th>
+                <th class="py-3.5 px-4">IP 이름</th>
+                <th class="py-3.5 px-4">리전 / 주소</th>
+                <th class="py-3.5 px-4">상태</th>
+                <th class="py-3.5 px-4">연결 대상</th>
+                <th class="py-3.5 px-4 text-right">월 비용</th>
+                <th class="py-3.5 px-4 text-center">제어</th>
               </tr>
             </thead>
-            <tbody id="ipsTableBody" class="divide-y divide-slate-800/60"></tbody>
+            <tbody id="ipsTableBody" class="divide-y divide-slate-100"></tbody>
           </table>
         </div>
       `;
 
       const tbody = document.getElementById('ipsTableBody');
       tbody.innerHTML = ips.map(ip => `
-        <tr class="hover:bg-slate-800/30 transition">
-          <td class="py-3 px-4 font-semibold text-white">${ip.name}</td>
-          <td class="py-3 px-4 font-mono text-slate-300">${ip.address} <span class="text-slate-500">(${ip.region})</span></td>
-          <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-[11px] bg-slate-800 text-slate-300">${ip.status}</span></td>
-          <td class="py-3 px-4">${ip.users.length ? ip.users.join(', ') : '<span class="text-rose-400">미사용 유휴</span>'}</td>
-          <td class="py-3 px-4 text-right font-mono font-semibold text-white">$${ip.monthlyCost.toFixed(2)}</td>
-          <td class="py-3 px-4 text-center">
-            <button onclick="confirmIpRelease('${ip.region}', '${ip.name}')" class="px-2 py-1 rounded bg-rose-500/10 text-rose-300 hover:bg-rose-500/20 text-xs font-medium">해제</button>
+        <tr class="hover:bg-slate-50 transition">
+          <td class="py-3.5 px-4 font-bold text-slate-900">${ip.name}</td>
+          <td class="py-3.5 px-4 font-mono font-bold text-slate-800">${ip.address} <span class="text-slate-400 font-normal">(${ip.region})</span></td>
+          <td class="py-3.5 px-4"><span class="px-2 py-0.5 rounded text-xs font-bold bg-slate-100 text-slate-700 border border-slate-200">${ip.status}</span></td>
+          <td class="py-3.5 px-4">${ip.users.length ? ip.users.join(', ') : '<span class="text-rose-700 font-bold">미사용 유휴 IP</span>'}</td>
+          <td class="py-3.5 px-4 text-right font-mono font-bold text-slate-900">$${ip.monthlyCost.toFixed(2)}</td>
+          <td class="py-3.5 px-4 text-center">
+            <button onclick="confirmIpRelease('${ip.region}', '${ip.name}')" class="px-2.5 py-1 rounded-lg bg-rose-50 text-rose-700 hover:bg-rose-100 border border-rose-200 text-xs font-bold">해제</button>
           </td>
         </tr>
       `).join('');
@@ -715,16 +723,16 @@
       const tbody = document.getElementById('bucketsTableBody');
       tbody.innerHTML = buckets.map(b => {
         const typeBadge = b.isSystem
-          ? `<span class="px-2 py-0.5 rounded text-[11px] bg-slate-800 text-slate-400">시스템/빌드 (보호됨)</span>`
-          : `<span class="px-2 py-0.5 rounded text-[11px] bg-indigo-500/10 text-indigo-300">일반 버킷</span>`;
+          ? `<span class="px-2 py-0.5 rounded text-xs font-bold bg-slate-100 text-slate-600 border border-slate-200">시스템/빌드 (보호됨)</span>`
+          : `<span class="px-2 py-0.5 rounded text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200">일반 버킷</span>`;
 
         return `
-          <tr class="hover:bg-slate-800/30 transition">
-            <td class="py-3 px-4 font-mono font-medium text-white">${b.name}</td>
-            <td class="py-3 px-4 text-slate-400 font-mono">${b.location}</td>
-            <td class="py-3 px-4 text-slate-400 font-mono">${b.storageClass}</td>
-            <td class="py-3 px-4">${typeBadge}</td>
-            <td class="py-3 px-4 text-right text-emerald-400 font-medium">$0.00 (무료 티어)</td>
+          <tr class="hover:bg-slate-50 transition">
+            <td class="py-3.5 px-4 font-mono font-bold text-slate-900">${b.name}</td>
+            <td class="py-3.5 px-4 text-slate-600 font-mono">${b.location}</td>
+            <td class="py-3.5 px-4 text-slate-600 font-mono">${b.storageClass}</td>
+            <td class="py-3.5 px-4">${typeBadge}</td>
+            <td class="py-3.5 px-4 text-right text-emerald-700 font-bold">$0.00 (무료 티어)</td>
           </tr>
         `;
       }).join('');
@@ -733,7 +741,7 @@
     function switchTab(tabId) {
       document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
       document.querySelectorAll('.tab-btn').forEach(b => {
-        b.className = 'tab-btn px-3 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 flex items-center gap-1.5 transition';
+        b.className = 'tab-btn px-4 py-2 rounded-xl text-xs font-bold bg-white text-slate-600 hover:text-slate-900 hover:bg-slate-100 border border-slate-200 flex items-center gap-2 transition';
       });
       document.getElementById(tabId).classList.remove('hidden');
 
@@ -744,14 +752,14 @@
         tabBuckets: 'btnTabBuckets'
       };
       const activeBtn = document.getElementById(btnMap[tabId]);
-      activeBtn.className = 'tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-indigo-600 text-white flex items-center gap-1.5 transition';
+      activeBtn.className = 'tab-btn px-4 py-2 rounded-xl text-xs font-bold bg-indigo-600 text-white shadow-sm flex items-center gap-2 transition';
     }
 
     function cleanupBillableOnly() {
       if (!currentData) return;
       openConfirmModal({
         title: '비용 발생 리소스 일괄 정리',
-        desc: '매달 요금을 발생시키는 유료 리소스(VM, 디스크, 외부 IP)를 정리합니다.\\n\\n• 시스템 버킷 및 대시보드는 100% 안전하게 유지됩니다.',
+        desc: '매달 요금을 발생시키는 유료 리소스(VM, 디스크, 외부 IP)를 선별 정리합니다.\n\n• 시스템 버킷 및 대시보드는 100% 안전하게 유지됩니다.',
         actionLabel: '정리 실행',
         requireInput: true,
         onConfirm: async () => {
@@ -770,7 +778,7 @@
     function bulkStopAllVms() {
       openConfirmModal({
         title: '모든 가상머신 일괄 중지',
-        desc: '실행 중인 모든 VM 인스턴스에 중지 명령을 전달합니다.\\n\\n• VM 가동 요금이 즉시 중단됩니다.',
+        desc: '실행 중인 모든 VM 인스턴스에 중지 명령을 전달합니다.\n\n• VM 가동 요금이 즉시 중단됩니다.',
         actionLabel: '모든 VM 중지',
         requireInput: false,
         onConfirm: async () => {
@@ -804,7 +812,7 @@
     function confirmVmStop(zone, name) {
       openConfirmModal({
         title: `가상머신 중지: ${name}`,
-        desc: `VM '${name}'을 중지하시겠습니까?\\n\\n• CPU 및 메모리 요금 청구가 중단됩니다.`,
+        desc: `VM '${name}'을 중지하시겠습니까?\n\n• CPU 및 메모리 요금 청구가 중단됩니다.`,
         actionLabel: '중지',
         requireInput: false,
         onConfirm: async () => {
@@ -931,19 +939,19 @@
     function showToast(message, type = 'info') {
       const container = document.getElementById('toastContainer');
       const toast = document.createElement('div');
-      toast.className = `p-3.5 rounded-xl border shadow-xl text-xs font-medium flex items-start gap-2.5 pointer-events-auto transition transform translate-y-2 opacity-0 duration-200 clean-card ${
-        type === 'success' ? 'border-emerald-500/40 text-emerald-200' :
-        type === 'error' ? 'border-rose-500/40 text-rose-200' :
-        'border-indigo-500/30 text-slate-200'
+      toast.className = `p-4 rounded-xl border shadow-lg text-xs font-bold flex items-start gap-2.5 pointer-events-auto transition transform translate-y-2 opacity-0 duration-200 bg-white ${
+        type === 'success' ? 'border-emerald-300 text-emerald-800' :
+        type === 'error' ? 'border-rose-300 text-rose-800' :
+        'border-indigo-200 text-slate-800'
       }`;
 
-      const icon = type === 'success' ? 'fa-circle-check text-emerald-400' :
-                   type === 'error' ? 'fa-circle-xmark text-rose-400' :
-                   'fa-circle-info text-indigo-400';
+      const icon = type === 'success' ? 'fa-circle-check text-emerald-600' :
+                   type === 'error' ? 'fa-circle-xmark text-rose-600' :
+                   'fa-circle-info text-indigo-600';
 
       toast.innerHTML = `
-        <i class="fa-solid ${icon} mt-0.5 text-xs shrink-0"></i>
-        <div class="flex-1">${message}</div>
+        <i class="fa-solid ${icon} mt-0.5 text-sm shrink-0"></i>
+        <div class="flex-1 leading-relaxed">${message}</div>
       `;
 
       container.appendChild(toast);

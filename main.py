@@ -296,21 +296,10 @@ async def list_resources(_: bool = Depends(verify_pin)):
             2
         )
 
-        base_billed_krw = float(os.environ.get("BASE_MONTH_BILLED_KRW", "1488.0"))
-        base_billed_usd = float(os.environ.get("BASE_MONTH_BILLED_USD", "1.102"))
-        month_total_usd = round(base_billed_usd + total_accrued, 2)
-        month_total_krw = round(base_billed_krw + (total_accrued * USD_TO_KRW), 0)
-
         return {
             "project": PROJECT_ID,
             "summary": {
                 "currentMonth": datetime.now(timezone.utc).month,
-                "monthTotalKrw": month_total_krw,
-                "monthTotalUsd": month_total_usd,
-                "baseBilledKrw": base_billed_krw,
-                "baseBilledUsd": base_billed_usd,
-                "liveAccruedUsd": total_accrued,
-                "liveAccruedKrw": round(total_accrued * USD_TO_KRW, 0),
                 "accruedCostToDate": total_accrued,
                 "accruedCostToDateKrw": round(total_accrued * USD_TO_KRW, 0),
                 "hourlyBurnRate": round(total_active_hourly_burn, 3),
