@@ -38,7 +38,7 @@ flowchart LR
 2. **무인(Zero-Token) 보안 아키텍처**: 코드 내에 비밀 키 파일(`.json`)이나 토큰을 일절 저장하지 않고, Cloud Run의 기본 런타임 서비스 계정(ADC)을 통해 Google Cloud API를 직접 호출합니다.
 3. **실시간 비용 및 누적 청구액 추적**:
    - Compute Engine 리소스의 생성 일시(`creationTimestamp`) 및 스펙을 분석하여 가동 시간 기반 시간당 소진율(`$/h`)을 자동 계산합니다.
-   - 당월 기청구 확정액(1,488원)에 실시간 가동 요금을 자동 합산하여 이번 달 총 청구액을 정확하게 보여줍니다.
+   - 활성 Compute Engine 리소스의 생성 일시와 사양을 바탕으로 100% 순수 GCP 실시간 API를 분석하여 시간당 소진율과 예상 월 청구액을 계산합니다.
 4. **원클릭 스마트 리소스 정리**:
    - 매달 요금을 발생시키는 VM, 영구 디스크, 외부 고정 IP만 선별하여 일괄 정리합니다.
    - Cloud Run 대시보드 자체와 무료 시스템 스토리지 버킷은 100% 안전하게 보호됩니다.
@@ -55,7 +55,7 @@ gcp-cost-dashboard/
 ├── requirements.txt      # Python 종속 라이브러리 목록
 ├── main.py               # FastAPI 백엔드 (GCP API 연동, 비용 계산, PIN 인증)
 ├── templates/
-│   └── index.html        # 모던 다크 테마 대시보드 UI (Tailwind CSS, JS)
+│   └── index.html        # 고대비 모던 라이트 테마 대시보드 UI (Tailwind CSS, JS)
 └── README.md             # 깃허브 공개용 프로젝트 설명서
 ```
 
@@ -438,10 +438,6 @@ async def list_resources(_: bool = Depends(verify_pin)):
         )
 
         # 당월 기발생 확정액 (환경 변수로 제어 가능)
-        base_billed_krw = float(os.environ.get("BASE_MONTH_BILLED_KRW", "1488.0"))
-        base_billed_usd = float(os.environ.get("BASE_MONTH_BILLED_USD", "1.102"))
-        month_total_usd = round(base_billed_usd + total_accrued, 2)
-        month_total_krw = round(base_billed_krw + (total_accrued * USD_TO_KRW), 0)
 
         return {
             "project": PROJECT_ID,
@@ -593,7 +589,7 @@ async def serve_index():
 ## 4. 원클릭 Cloud Run 배포 명령어
 
 > [!TIP]
-> 배포 시 필요한 환경 변수(`GCP_PROJECT`, `DASHBOARD_PIN`, `BASE_MONTH_BILLED_KRW`, `BASE_MONTH_BILLED_USD`)를 파라미터로 주입하므로, 코드 자체에는 보안 정보가 전혀 남지 않습니다.
+> 배포 시 필요한 환경 변수(`GCP_PROJECT`, `DASHBOARD_PIN`)를 파라미터로 주입하므로, 코드 자체에는 보안 정보가 전혀 남지 않습니다.
 
 ### 1단계: gcloud 로그인 및 프로젝트 설정
 ```powershell
@@ -609,7 +605,7 @@ gcloud run deploy gcp-cost-manager `
   --source . `
   --region asia-northeast3 `
   --allow-unauthenticated `
-  --set-env-vars GCP_PROJECT=YOUR_PROJECT_ID,DASHBOARD_PIN=7500,BASE_MONTH_BILLED_KRW=1488.0,BASE_MONTH_BILLED_USD=1.102 `
+  --set-env-vars GCP_PROJECT=YOUR_PROJECT_ID,DASHBOARD_PIN=7500 `
   --memory 512Mi `
   --min-instances 0 `
   --max-instances 2 `
