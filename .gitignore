@@ -1,0 +1,29 @@
+﻿# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environments & Secret Files (CRITICAL: Never commit credentials!)
+.env
+.env.*
+*.key
+*.pem
+*.pfx
+*credentials*.json
+*service-account*.json
+*secret*.json
+billing_sync.json
+
+# Operating System Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE & Editor Configurations
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# Logs
+*.log
