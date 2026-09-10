@@ -304,6 +304,7 @@ async def list_resources(_: bool = Depends(verify_pin)):
         return {
             "project": PROJECT_ID,
             "summary": {
+                "currentMonth": datetime.now(timezone.utc).month,
                 "monthTotalKrw": month_total_krw,
                 "monthTotalUsd": month_total_usd,
                 "baseBilledKrw": base_billed_krw,
